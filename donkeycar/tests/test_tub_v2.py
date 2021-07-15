@@ -29,24 +29,14 @@ class TestTub(unittest.TestCase):
         
         for record in records:
             self.tub.write_record(record)
-<<<<<<< HEAD
-        
-        for index in delete_indexes:
-=======
 
         for index in self.delete_indexes:
->>>>>>> origin/dev
             self.tub.delete_records(index)
 
         count = 0
         for record in self.tub:
             print(f'Record {record}')
             count += 1
-<<<<<<< HEAD
-        # assert True == False
-        self.assertEqual(count, (write_count - len(delete_indexes)))
-        self.assertEqual(len(self.tub), (write_count - len(delete_indexes)))
-=======
 
         self.assertEqual(count, (write_count - len(self.delete_indexes)))
         self.assertEqual(len(self.tub),
@@ -70,7 +60,6 @@ class TestTub(unittest.TestCase):
                 assert all((Collator.is_continuous(rec_1, rec_2)
                             for rec_1, rec_2 in zip(it1, it2))), \
                     'Non continuous records found'
->>>>>>> origin/dev
 
         # Note that self.tub.metadata is an array of tuples
         print(self.tub.metadata)
