@@ -97,7 +97,7 @@ class RemoteWebServer():
 
 class LocalWebController(tornado.web.Application):
 
-    def __init__(self, port=8887, mode='user', check_inert=True):
+    def __init__(self, port=8887, mode='user', check_inert=True, js_config={}):
         '''
         Create and publish variables needed on many of
         the web handlers.
@@ -119,6 +119,7 @@ class LocalWebController(tornado.web.Application):
 
         self.dead_zone = 0.05
         self.check_inert = check_inert # to check whether the car is inert
+        self.js_config = js_config
 
         handlers = [
             (r"/", RedirectHandler, dict(url="/drive")),
@@ -170,8 +171,13 @@ class LocalWebController(tornado.web.Application):
             if self.num_records % 10 == 0:
                 if self.loop is not None:
                     self.loop.add_callback(self.update_wsclients)
+                    
+        if self.throttle < 0:
+            th = max(self.js_config['JOYSTICK_THROTTLE_DIR'], self.throttle)
+        else:
+            th = min(self.js_config['JOYSTICK_MAX_THROTTLE'], self.throttle)
 
-        return self.angle, self.throttle, self.mode, self.recording
+        return self.angle, th, self.mode, self.recording
 
     def run(self, img_arr=None):
         self.img_arr = img_arr
