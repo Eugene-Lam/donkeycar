@@ -102,5 +102,8 @@ class ImageAugmentation:
             return iaa.GaussianBlur(sigma=interval)
 
     def augment(self, img_arr):
-        aug_img_arr = self.augmentations.augment_image(img_arr)
-        return aug_img_arr
+        if img_arr is None:
+            return img_arr
+        else:
+            aug_img_arr = self.augmentations.augment_image(img_arr)
+            return aug_img_arr
